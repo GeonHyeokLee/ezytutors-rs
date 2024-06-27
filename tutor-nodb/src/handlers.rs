@@ -16,6 +16,7 @@ pub async fn new_course(
     app_state: web::Data<AppState>,
 ) -> HttpResponse {
     println!("Received new course");
+
     let course_count_for_user = app_state
         .courses
         .lock()
@@ -23,11 +24,11 @@ pub async fn new_course(
         .clone()
         .into_iter()
         .filter(|course| course.tutor_id == new_course.tutor_id)
-        .count();
+        .count() as i32;
 
     let new_course = Course {
         tutor_id: new_course.tutor_id,
-        course_id: Some(i32::try_from(course_count_for_user).unwrap() + 1),
+        course_id: Some(course_count_for_user + 1),
         course_name: new_course.course_name.clone(),
         posted_time: Some(Utc::now().naive_utc()),
     };
