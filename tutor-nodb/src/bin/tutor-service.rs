@@ -3,6 +3,9 @@ use routes::general_routes;
 use state::AppState;
 use std::{io, sync::Mutex};
 
+#[path = "../models.rs"]
+mod models;
+
 #[path = "../handlers.rs"]
 mod handlers;
 
