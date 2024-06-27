@@ -60,40 +60,39 @@ pub async fn get_courses_for_tutor(
 }
 
 #[cfg(test)]
-#[actix_rt::test]
-async fn post_course_test() {
+mod tests {
+    use super::*;
     use actix_web::http::StatusCode;
     use std::sync::Mutex;
 
-    let course = web::Json(Course {
-        tutor_id: 1,
-        course_name: "Hello, this is test course".into(),
-        course_id: None,
-        posted_time: None,
-    });
+    #[actix_rt::test]
+    async fn post_course_test() {
+        let course = web::Json(Course {
+            tutor_id: 1,
+            course_name: "Hello, this is test course".into(),
+            course_id: None,
+            posted_time: None,
+        });
 
-    let app_state = web::Data::new(AppState {
-        health_check_response: "".to_string(),
-        visit_count: Mutex::new(0),
-        courses: Mutex::new(vec![]),
-    });
+        let app_state = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            courses: Mutex::new(vec![]),
+        });
 
-    let resp = new_course(course, app_state).await;
-    assert_eq!(resp.status(), StatusCode::OK);
-}
+        let resp = new_course(course, app_state).await;
+        assert_eq!(resp.status(), StatusCode::OK);
+    }
 
-#[cfg(test)]
-#[actix_rt::test]
-async fn get_all_courses_success() {
-    use actix_web::http::StatusCode;
-    use std::sync::Mutex;
-
-    let app_state = web::Data::new(AppState {
-        health_check_response: "".to_string(),
-        visit_count: Mutex::new(0),
-        courses: Mutex::new(vec![]),
-    });
-    let tutor_id = web::Path::from(1);
-    let resp = get_courses_for_tutor(app_state, tutor_id).await;
-    assert_eq!(resp.status(), StatusCode::OK);
+    #[actix_rt::test]
+    async fn get_all_courses_success() {
+        let app_state = web::Data::new(AppState {
+            health_check_response: "".to_string(),
+            visit_count: Mutex::new(0),
+            courses: Mutex::new(vec![]),
+        });
+        let tutor_id = web::Path::from(1);
+        let resp = get_courses_for_tutor(app_state, tutor_id).await;
+        assert_eq!(resp.status(), StatusCode::OK);
+    }
 }
