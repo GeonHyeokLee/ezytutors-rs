@@ -11,8 +11,8 @@ content-type: application/json
 
 {
   "tutor_id": 1,
-  "course_id": 4,
-  "course_name": "Fourth course"
+  "course_id": 3,
+  "course_name": "Three course"
 }
 
 ###
